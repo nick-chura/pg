@@ -2,16 +2,12 @@ use warnings;
 use strict;
 package main;
 
-warn "$main::webwork_dir/lib";
-warn "$main::pg_dir/lib";
 
-use lib "$main::webwork_dir/lib";
-use lib "$main::pg_dir/lib";
+$main::macros_dir = "$main::pg_dir/macros";
 
-# use WeBWorK::CourseEnvironment;
-use WeBWorK::Localize;
-# use WeBWorK::PG;
+# use WeBWorK::Localize;
 use PGcore;
+use Parser;
 
 
 # build up enough of a PG environment to get things running
@@ -24,7 +20,7 @@ $envir{pgDirectories}->{macrosPath} = [ "$main::macros_dir"];
 $envir{macrosPath} = [ "$main::macros_dir"];
 $envir{displayMode} = "HTML_MathJax";
 $envir{language} = "en-us";
-$envir{language_subroutine} = WeBWorK::Localize::getLoc($envir{language});
+$envir{language_subroutine} = sub { return @_;}; # return the string passed in instead going to maketext
 
 sub be_strict {
 	require 'ww_strict.pm';
